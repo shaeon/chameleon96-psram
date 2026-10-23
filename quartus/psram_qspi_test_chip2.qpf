@@ -1,0 +1,13 @@
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition
+#
+# -------------------------------------------------------------------------- #
+
+QUARTUS_VERSION = "22.1"
+DATE = "12:44:00  August 15, 2026"
+
+# Revisions
+
+PROJECT_REVISION = "psram_qspi_test_chip2"

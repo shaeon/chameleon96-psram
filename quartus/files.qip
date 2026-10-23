@@ -1,0 +1,5 @@
+set_global_assignment -name QIP_FILE hps/synthesis/hps.qip
+set_global_assignment -name SYSTEMVERILOG_FILE psram_qspi_test_chip2.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/psram.sv
+set_global_assignment -name SYSTEMVERILOG_FILE ../rtl/psram_test_ctrl.sv
+set_global_assignment -name QIP_FILE pll96.qip

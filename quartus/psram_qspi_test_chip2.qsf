@@ -1,0 +1,607 @@
+# -------------------------------------------------------------------------- #
+# M3 QSPI PSRAM self-test build (clean project) -- CHIP 2 VARIANT.
+# Top level: psram_qspi_test_chip2. HPS Qsys wrapper + psram_bridge + psram_test_ctrl.
+# No HDMI/pll fabric logic. The QSPI addon (6-lane) has no RST# line.
+#
+# This is a byte-for-byte clone of psram_qspi_test with ONE functional change:
+# the six PSRAM loan-I/O indices are retargeted from chip 1 (U1) to chip 2 (U2).
+# See psram_qspi_test_chip2.sv for the pin map.
+# -------------------------------------------------------------------------- #
+
+set_global_assignment -name FAMILY "Cyclone V"
+set_global_assignment -name DEVICE 5CSEBA6U19I7
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 22.1STD.2
+set_global_assignment -name LAST_QUARTUS_VERSION "22.1std.2 Lite Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP "-40"
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 100
+set_global_assignment -name DEVICE_FILTER_PACKAGE UFBGA
+set_global_assignment -name DEVICE_FILTER_PIN_COUNT 484
+set_global_assignment -name DEVICE_FILTER_SPEED_GRADE 7
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim (Verilog)"
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_timing
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name TOP_LEVEL_ENTITY psram_qspi_test_chip2
+set_global_assignment -name GENERATE_RBF_FILE ON
+set_global_assignment -name QIP_FILE files.qip
+
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+
+# --- HPS 3V3 GPIO ----------------------------------------------------------
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HPS_3V3_GPIO00
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to HPS_3V3_GPIO09
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to HPS_3V3_GPIO00
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to HPS_3V3_GPIO09
+
+# --- HPS DDR3 SDRAM (auto-generated __hps_sdram_p0 block) ------------------
+set_global_assignment -name USE_DLL_FREQUENCY_FOR_DQS_DELAY_CHAIN ON
+set_global_assignment -name UNIPHY_SEQUENCER_DQS_CONFIG_ENABLE ON
+set_global_assignment -name OPTIMIZE_MULTI_CORNER_TIMING ON
+set_global_assignment -name ECO_REGENERATE_REPORT ON
+set_instance_assignment -name D5_DELAY 2 -to mem_ck -tag __hps_sdram_p0
+set_instance_assignment -name D5_DELAY 2 -to mem_ck_n -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[2] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[3] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[4] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[5] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[6] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[7] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[8] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[9] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[10] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[11] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[12] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[13] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[14] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dq[15] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dm[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dm[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dqs[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dqs[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dqs_n[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_dqs_n[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[10] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[11] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[12] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[2] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[3] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[4] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[5] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[6] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[7] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[8] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[9] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_ba[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_ba[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_ba[2] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_cas_n -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_cke -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_cs_n -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_odt -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_ras_n -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_we_n -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_reset_n -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_ck -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_ck_n -tag __hps_sdram_p0
+set_instance_assignment -name GLOBAL_SIGNAL OFF -to u0|hps_0|hps_io|border|hps_sdram_inst|p0|umemphy|ureset|phy_reset_mem_stable_n -tag __hps_sdram_p0
+set_instance_assignment -name GLOBAL_SIGNAL OFF -to u0|hps_0|hps_io|border|hps_sdram_inst|p0|umemphy|ureset|phy_reset_n -tag __hps_sdram_p0
+set_instance_assignment -name GLOBAL_SIGNAL OFF -to u0|hps_0|hps_io|border|hps_sdram_inst|p0|umemphy|uio_pads|dq_ddio[0].read_capture_clk_buffer -tag __hps_sdram_p0
+set_instance_assignment -name GLOBAL_SIGNAL OFF -to u0|hps_0|hps_io|border|hps_sdram_inst|p0|umemphy|uread_datapath|reset_n_fifo_write_side[0] -tag __hps_sdram_p0
+set_instance_assignment -name GLOBAL_SIGNAL OFF -to u0|hps_0|hps_io|border|hps_sdram_inst|p0|umemphy|uread_datapath|reset_n_fifo_wraddress[0] -tag __hps_sdram_p0
+set_instance_assignment -name GLOBAL_SIGNAL OFF -to u0|hps_0|hps_io|border|hps_sdram_inst|p0|umemphy|uio_pads|dq_ddio[1].read_capture_clk_buffer -tag __hps_sdram_p0
+set_instance_assignment -name GLOBAL_SIGNAL OFF -to u0|hps_0|hps_io|border|hps_sdram_inst|p0|umemphy|uread_datapath|reset_n_fifo_write_side[1] -tag __hps_sdram_p0
+set_instance_assignment -name GLOBAL_SIGNAL OFF -to u0|hps_0|hps_io|border|hps_sdram_inst|p0|umemphy|uread_datapath|reset_n_fifo_wraddress[1] -tag __hps_sdram_p0
+set_instance_assignment -name ENABLE_BENEFICIAL_SKEW_OPTIMIZATION_FOR_NON_GLOBAL_CLOCKS ON -to u0|hps_0|hps_io|border|hps_sdram_inst -tag __hps_sdram_p0
+set_instance_assignment -name PLL_COMPENSATION_MODE DIRECT -to u0|hps_0|hps_io|border|hps_sdram_inst|pll0|fbout -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[13] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to mem_a[14] -tag __hps_sdram_p0
+
+set_instance_assignment -name BOARD_MODEL_FAR_PULLUP_R OPEN -to mem_reset_n -tag __hps_sdram_p0
+set_instance_assignment -name BOARD_MODEL_NEAR_PULLUP_R OPEN -to mem_reset_n -tag __hps_sdram_p0
+set_instance_assignment -name BOARD_MODEL_FAR_PULLDOWN_R OPEN -to mem_reset_n -tag __hps_sdram_p0
+set_instance_assignment -name BOARD_MODEL_NEAR_PULLDOWN_R OPEN -to mem_reset_n -tag __hps_sdram_p0
+
+
+set_instance_assignment -name D5_DELAY 2 -to HPS_SDRAM_CLK_P -tag __hps_sdram_p0
+set_instance_assignment -name D5_DELAY 2 -to HPS_SDRAM_CLK_N -tag __hps_sdram_p0
+set_instance_assignment -name BOARD_MODEL_FAR_PULLUP_R OPEN -to HPS_SDRAM_nRESET -tag __hps_sdram_p0
+set_instance_assignment -name BOARD_MODEL_NEAR_PULLUP_R OPEN -to HPS_SDRAM_nRESET -tag __hps_sdram_p0
+set_instance_assignment -name BOARD_MODEL_FAR_PULLDOWN_R OPEN -to HPS_SDRAM_nRESET -tag __hps_sdram_p0
+set_instance_assignment -name BOARD_MODEL_NEAR_PULLDOWN_R OPEN -to HPS_SDRAM_nRESET -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[2] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[3] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[4] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[5] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[6] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[7] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[8] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[9] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[10] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[11] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[12] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[13] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[14] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQ[15] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MDM[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MDM[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQS_P[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQS_P[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQS_N[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_DQS_N[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_BA[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_BA[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_BA[2] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MODT -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_nCAS -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_nMCKE -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_nMCS -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_nMWE -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_nRAS -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_nRESET -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_CLK_P -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_CLK_N -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[0] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[10] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[11] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[12] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[13] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[14] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[1] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[2] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[3] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[4] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[5] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[6] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[7] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[8] -tag __hps_sdram_p0
+set_instance_assignment -name PACKAGE_SKEW_COMPENSATION OFF -to HPS_SDRAM_MA[9] -tag __hps_sdram_p0
+
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_RZQ -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[0] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[0] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[0] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[1] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[1] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[1] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[2] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[2] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[2] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[3] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[3] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[3] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[4] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[4] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[4] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[5] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[5] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[5] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[6] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[6] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[6] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[7] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[7] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[7] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[8] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[8] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[8] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[9] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[9] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[9] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[10] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[10] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[10] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[11] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[11] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[11] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[12] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[12] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[12] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[13] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[13] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[13] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[14] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[14] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[14] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_DQ[15] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[15] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQ[15] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "DIFFERENTIAL 1.35-V SSTL" -to HPS_SDRAM_DQS_P[0] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQS_P[0] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQS_P[0] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "DIFFERENTIAL 1.35-V SSTL" -to HPS_SDRAM_DQS_P[1] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQS_P[1] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQS_P[1] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "DIFFERENTIAL 1.35-V SSTL" -to HPS_SDRAM_DQS_N[0] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQS_N[0] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQS_N[0] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "DIFFERENTIAL 1.35-V SSTL" -to HPS_SDRAM_DQS_N[1] -tag __hps_sdram_p0
+set_instance_assignment -name INPUT_TERMINATION "PARALLEL 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQS_N[1] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_DQS_N[1] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "DIFFERENTIAL 1.35-V SSTL" -to HPS_SDRAM_CLK_P -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_CLK_P -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "DIFFERENTIAL 1.35-V SSTL" -to HPS_SDRAM_CLK_N -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_CLK_N -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_BA[0] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_BA[0] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_BA[1] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_BA[1] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_BA[2] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_BA[2] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MODT -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MODT -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_nCAS -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_nCAS -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_nMCKE -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_nMCKE -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_nMCS -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_nMCS -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_nMWE -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_nMWE -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_nRAS -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_nRAS -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_nRESET -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_nRESET -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MDM[0] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_MDM[0] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MDM[1] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITH CALIBRATION" -to HPS_SDRAM_MDM[1] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[0] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[0] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[10] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[10] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[11] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[11] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[12] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[12] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[13] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[13] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[14] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[14] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[1] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[1] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[2] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[2] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[3] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[3] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[4] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[4] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[5] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[5] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[6] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[6] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[7] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[7] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[8] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[8] -tag __hps_sdram_p0
+set_instance_assignment -name IO_STANDARD "SSTL-135" -to HPS_SDRAM_MA[9] -tag __hps_sdram_p0
+set_instance_assignment -name OUTPUT_TERMINATION "SERIES 40 OHM WITHOUT CALIBRATION" -to HPS_SDRAM_MA[9] -tag __hps_sdram_p0
+
+set_global_assignment -name SDC_FILE loanio_sta.sdc
+
+set_global_assignment -name EDA_NETLIST_WRITER_OUTPUT_DIR eda -section_id eda_simulation
+set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
+set_global_assignment -name ENABLE_SIGNALTAP ON
+set_global_assignment -name USE_SIGNALTAP_FILE output_files/test.stp
+set_global_assignment -name SIGNALTAP_FILE output_files/stp1.stp
+set_global_assignment -name SIGNALTAP_FILE output_files/stp2.stp
+set_global_assignment -name SIGNALTAP_FILE output_files/test.stp
+set_global_assignment -name SLD_NODE_CREATOR_ID 110 -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_ENTITY_NAME sld_signaltap -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_RAM_BLOCK_TYPE=AUTO" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_NODE_INFO=805334528" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_INVERSION_MASK_LENGTH=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ATTRIBUTE_MEM_MODE=OFF" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STATE_FLOW_USE_GENERATED=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STATE_BITS=11" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_BUFFER_FULL_STOP=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_CURRENT_RESOURCE_WIDTH=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INCREMENTAL_ROUTING=1" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[2] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[4] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[6] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[9] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[10] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[12] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[13] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[30] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_LEVEL=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_IN_ENABLED=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_PIPELINE=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_RAM_PIPELINE=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_COUNTER_PIPELINE=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ADVANCED_TRIGGER_ENTITY=basic,1," -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_LEVEL_PIPELINE=1" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_ENABLE_ADVANCED_TRIGGER=0" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[7] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[19] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[23] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[24] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[8] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_clk -to "psram:psram|clk" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[0] -to "psram:psram|addr[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[1] -to "psram:psram|addr[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[2] -to "psram:psram|addr[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[3] -to "psram:psram|addr[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[4] -to "psram:psram|addr[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[5] -to "psram:psram|addr[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[6] -to "psram:psram|addr[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[7] -to "psram:psram|addr[16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[8] -to "psram:psram|addr[17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[9] -to "psram:psram|addr[18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[10] -to "psram:psram|addr[19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[11] -to "psram:psram|addr[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[12] -to "psram:psram|addr[20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[13] -to "psram:psram|addr[21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[14] -to "psram:psram|addr[22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[15] -to "psram:psram|addr[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[16] -to "psram:psram|addr[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[17] -to "psram:psram|addr[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[18] -to "psram:psram|addr[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[19] -to "psram:psram|addr[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[20] -to "psram:psram|addr[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[21] -to "psram:psram|addr[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[22] -to "psram:psram|addr[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[23] -to "psram:psram|cap_en_s" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[24] -to "psram:psram|ce_n" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[25] -to "psram:psram|din[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[26] -to "psram:psram|din[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[27] -to "psram:psram|din[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[28] -to "psram:psram|din[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[29] -to "psram:psram|din[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[30] -to "psram:psram|din[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[31] -to "psram:psram|din[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[32] -to "psram:psram|din[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[33] -to "psram:psram|din[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[34] -to "psram:psram|din[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[35] -to "psram:psram|din[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[36] -to "psram:psram|din[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[37] -to "psram:psram|din[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[38] -to "psram:psram|din[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[39] -to "psram:psram|din[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[40] -to "psram:psram|din[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[41] -to "psram:psram|dout[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[42] -to "psram:psram|dout[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[43] -to "psram:psram|dout[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[44] -to "psram:psram|dout[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[45] -to "psram:psram|dout[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[46] -to "psram:psram|dout[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[47] -to "psram:psram|dout[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[48] -to "psram:psram|dout[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[49] -to "psram:psram|dout[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[50] -to "psram:psram|dout[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[51] -to "psram:psram|dout[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[52] -to "psram:psram|dout[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[53] -to "psram:psram|dout[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[54] -to "psram:psram|dout[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[55] -to "psram:psram|dout[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[56] -to "psram:psram|dout[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[0] -to "psram:psram|addr[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[1] -to "psram:psram|addr[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[2] -to "psram:psram|addr[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[3] -to "psram:psram|addr[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[4] -to "psram:psram|addr[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[5] -to "psram:psram|addr[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[6] -to "psram:psram|addr[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[7] -to "psram:psram|addr[16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[8] -to "psram:psram|addr[17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[9] -to "psram:psram|addr[18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[10] -to "psram:psram|addr[19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[11] -to "psram:psram|addr[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[12] -to "psram:psram|addr[20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[13] -to "psram:psram|addr[21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[14] -to "psram:psram|addr[22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[15] -to "psram:psram|addr[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[16] -to "psram:psram|addr[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[17] -to "psram:psram|addr[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[18] -to "psram:psram|addr[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[19] -to "psram:psram|addr[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[20] -to "psram:psram|addr[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[21] -to "psram:psram|addr[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[22] -to "psram:psram|addr[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[23] -to "psram:psram|cap_en_s" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[24] -to "psram:psram|ce_n" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[25] -to "psram:psram|din[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[26] -to "psram:psram|din[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[27] -to "psram:psram|din[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[28] -to "psram:psram|din[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[29] -to "psram:psram|din[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[30] -to "psram:psram|din[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[31] -to "psram:psram|din[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[32] -to "psram:psram|din[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[33] -to "psram:psram|din[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[34] -to "psram:psram|din[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[35] -to "psram:psram|din[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[36] -to "psram:psram|din[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[37] -to "psram:psram|din[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[38] -to "psram:psram|din[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[39] -to "psram:psram|din[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[40] -to "psram:psram|din[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[41] -to "psram:psram|dout[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[42] -to "psram:psram|dout[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[43] -to "psram:psram|dout[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[44] -to "psram:psram|dout[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[45] -to "psram:psram|dout[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[46] -to "psram:psram|dout[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[47] -to "psram:psram|dout[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[48] -to "psram:psram|dout[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[49] -to "psram:psram|dout[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[50] -to "psram:psram|dout[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[51] -to "psram:psram|dout[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[52] -to "psram:psram|dout[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[53] -to "psram:psram|dout[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[54] -to "psram:psram|dout[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[55] -to "psram:psram|dout[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[56] -to "psram:psram|dout[9]" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[5] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[57] -to "psram:psram|fpcnt[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[58] -to "psram:psram|fpcnt[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[59] -to "psram:psram|fpcnt[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[60] -to "psram:psram|fpcnt[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[61] -to "psram:psram|fpcnt[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[62] -to "psram:psram|fpcnt[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[63] -to "psram:psram|fpcnt[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[64] -to "psram:psram|framer" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[65] -to "psram:psram|fword" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[66] -to "psram:psram|ready" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[67] -to "psram_test_ctrl:u_ctrl|fe_addr[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[68] -to "psram_test_ctrl:u_ctrl|fe_addr[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[69] -to "psram_test_ctrl:u_ctrl|fe_addr[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[70] -to "psram_test_ctrl:u_ctrl|fe_addr[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[71] -to "psram_test_ctrl:u_ctrl|fe_addr[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[72] -to "psram_test_ctrl:u_ctrl|fe_addr[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[73] -to "psram_test_ctrl:u_ctrl|fe_addr[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[74] -to "psram_test_ctrl:u_ctrl|fe_addr[16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[75] -to "psram_test_ctrl:u_ctrl|fe_addr[17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[76] -to "psram_test_ctrl:u_ctrl|fe_addr[18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[77] -to "psram_test_ctrl:u_ctrl|fe_addr[19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[78] -to "psram_test_ctrl:u_ctrl|fe_addr[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[79] -to "psram_test_ctrl:u_ctrl|fe_addr[20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[80] -to "psram_test_ctrl:u_ctrl|fe_addr[21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[81] -to "psram_test_ctrl:u_ctrl|fe_addr[22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[82] -to "psram_test_ctrl:u_ctrl|fe_addr[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[83] -to "psram_test_ctrl:u_ctrl|fe_addr[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[84] -to "psram_test_ctrl:u_ctrl|fe_addr[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[85] -to "psram_test_ctrl:u_ctrl|fe_addr[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[86] -to "psram_test_ctrl:u_ctrl|fe_addr[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[87] -to "psram_test_ctrl:u_ctrl|fe_addr[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[88] -to "psram_test_ctrl:u_ctrl|fe_addr[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[89] -to "psram_test_ctrl:u_ctrl|fe_addr[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[90] -to "psram_test_ctrl:u_ctrl|fe_exp[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[91] -to "psram_test_ctrl:u_ctrl|fe_exp[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[92] -to "psram_test_ctrl:u_ctrl|fe_exp[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[93] -to "psram_test_ctrl:u_ctrl|fe_exp[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[94] -to "psram_test_ctrl:u_ctrl|fe_exp[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[95] -to "psram_test_ctrl:u_ctrl|fe_exp[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[96] -to "psram_test_ctrl:u_ctrl|fe_exp[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[97] -to "psram_test_ctrl:u_ctrl|fe_exp[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[98] -to "psram_test_ctrl:u_ctrl|fe_exp[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[99] -to "psram_test_ctrl:u_ctrl|fe_exp[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[100] -to "psram_test_ctrl:u_ctrl|fe_exp[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[101] -to "psram_test_ctrl:u_ctrl|fe_exp[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[102] -to "psram_test_ctrl:u_ctrl|fe_exp[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[103] -to "psram_test_ctrl:u_ctrl|fe_exp[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[104] -to "psram_test_ctrl:u_ctrl|fe_exp[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[105] -to "psram_test_ctrl:u_ctrl|fe_exp[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[106] -to "psram_test_ctrl:u_ctrl|fe_got[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[107] -to "psram_test_ctrl:u_ctrl|fe_got[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[108] -to "psram_test_ctrl:u_ctrl|fe_got[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[109] -to "psram_test_ctrl:u_ctrl|fe_got[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[110] -to "psram_test_ctrl:u_ctrl|fe_got[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[111] -to "psram_test_ctrl:u_ctrl|fe_got[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[112] -to "psram_test_ctrl:u_ctrl|fe_got[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[113] -to "psram_test_ctrl:u_ctrl|fe_got[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[114] -to "psram_test_ctrl:u_ctrl|fe_got[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[115] -to "psram_test_ctrl:u_ctrl|fe_got[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[116] -to "psram_test_ctrl:u_ctrl|fe_got[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[117] -to "psram_test_ctrl:u_ctrl|fe_got[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[118] -to "psram_test_ctrl:u_ctrl|fe_got[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[119] -to "psram_test_ctrl:u_ctrl|fe_got[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[120] -to "psram_test_ctrl:u_ctrl|fe_got[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_trigger_in[121] -to "psram_test_ctrl:u_ctrl|fe_got[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[57] -to "psram:psram|fpcnt[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[58] -to "psram:psram|fpcnt[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[59] -to "psram:psram|fpcnt[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[60] -to "psram:psram|fpcnt[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[61] -to "psram:psram|fpcnt[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[62] -to "psram:psram|fpcnt[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[63] -to "psram:psram|fpcnt[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[64] -to "psram:psram|framer" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[65] -to "psram:psram|fword" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[66] -to "psram:psram|ready" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[67] -to "psram_test_ctrl:u_ctrl|fe_addr[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[68] -to "psram_test_ctrl:u_ctrl|fe_addr[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[69] -to "psram_test_ctrl:u_ctrl|fe_addr[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[70] -to "psram_test_ctrl:u_ctrl|fe_addr[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[71] -to "psram_test_ctrl:u_ctrl|fe_addr[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[72] -to "psram_test_ctrl:u_ctrl|fe_addr[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[73] -to "psram_test_ctrl:u_ctrl|fe_addr[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[74] -to "psram_test_ctrl:u_ctrl|fe_addr[16]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[75] -to "psram_test_ctrl:u_ctrl|fe_addr[17]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[76] -to "psram_test_ctrl:u_ctrl|fe_addr[18]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[77] -to "psram_test_ctrl:u_ctrl|fe_addr[19]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[78] -to "psram_test_ctrl:u_ctrl|fe_addr[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[79] -to "psram_test_ctrl:u_ctrl|fe_addr[20]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[80] -to "psram_test_ctrl:u_ctrl|fe_addr[21]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[81] -to "psram_test_ctrl:u_ctrl|fe_addr[22]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[82] -to "psram_test_ctrl:u_ctrl|fe_addr[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[83] -to "psram_test_ctrl:u_ctrl|fe_addr[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[84] -to "psram_test_ctrl:u_ctrl|fe_addr[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[85] -to "psram_test_ctrl:u_ctrl|fe_addr[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[86] -to "psram_test_ctrl:u_ctrl|fe_addr[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[87] -to "psram_test_ctrl:u_ctrl|fe_addr[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[88] -to "psram_test_ctrl:u_ctrl|fe_addr[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[89] -to "psram_test_ctrl:u_ctrl|fe_addr[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[90] -to "psram_test_ctrl:u_ctrl|fe_exp[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[91] -to "psram_test_ctrl:u_ctrl|fe_exp[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[92] -to "psram_test_ctrl:u_ctrl|fe_exp[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[93] -to "psram_test_ctrl:u_ctrl|fe_exp[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[94] -to "psram_test_ctrl:u_ctrl|fe_exp[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[95] -to "psram_test_ctrl:u_ctrl|fe_exp[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[96] -to "psram_test_ctrl:u_ctrl|fe_exp[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[97] -to "psram_test_ctrl:u_ctrl|fe_exp[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[98] -to "psram_test_ctrl:u_ctrl|fe_exp[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[99] -to "psram_test_ctrl:u_ctrl|fe_exp[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[100] -to "psram_test_ctrl:u_ctrl|fe_exp[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[101] -to "psram_test_ctrl:u_ctrl|fe_exp[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[102] -to "psram_test_ctrl:u_ctrl|fe_exp[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[103] -to "psram_test_ctrl:u_ctrl|fe_exp[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[104] -to "psram_test_ctrl:u_ctrl|fe_exp[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[105] -to "psram_test_ctrl:u_ctrl|fe_exp[9]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[106] -to "psram_test_ctrl:u_ctrl|fe_got[0]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[107] -to "psram_test_ctrl:u_ctrl|fe_got[10]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[108] -to "psram_test_ctrl:u_ctrl|fe_got[11]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[109] -to "psram_test_ctrl:u_ctrl|fe_got[12]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[110] -to "psram_test_ctrl:u_ctrl|fe_got[13]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[111] -to "psram_test_ctrl:u_ctrl|fe_got[14]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[112] -to "psram_test_ctrl:u_ctrl|fe_got[15]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[113] -to "psram_test_ctrl:u_ctrl|fe_got[1]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[114] -to "psram_test_ctrl:u_ctrl|fe_got[2]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[115] -to "psram_test_ctrl:u_ctrl|fe_got[3]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[116] -to "psram_test_ctrl:u_ctrl|fe_got[4]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[117] -to "psram_test_ctrl:u_ctrl|fe_got[5]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[118] -to "psram_test_ctrl:u_ctrl|fe_got[6]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[119] -to "psram_test_ctrl:u_ctrl|fe_got[7]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[120] -to "psram_test_ctrl:u_ctrl|fe_got[8]" -section_id auto_signaltap_0
+set_instance_assignment -name CONNECT_TO_SLD_NODE_ENTITY_PORT acq_data_in[121] -to "psram_test_ctrl:u_ctrl|fe_got[9]" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_DATA_BITS=122" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_TRIGGER_BITS=122" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_STORAGE_QUALIFIER_BITS=122" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_POWER_UP_TRIGGER=0" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK=000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_INVERSION_MASK_LENGTH=390" -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_SEGMENT_SIZE=1024" -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[0] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[1] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[3] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[11] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[14] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[15] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[16] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[17] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[18] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[20] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[21] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[22] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[25] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[26] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[27] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[28] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[29] -to auto_signaltap_0|vcc -section_id auto_signaltap_0
+set_instance_assignment -name POST_FIT_CONNECT_TO_SLD_NODE_ENTITY_PORT crc[31] -to auto_signaltap_0|gnd -section_id auto_signaltap_0
+set_global_assignment -name SLD_NODE_PARAMETER_ASSIGNMENT "SLD_SAMPLE_DEPTH=1024" -section_id auto_signaltap_0
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
+set_global_assignment -name SLD_FILE db/test_auto_stripped.stp

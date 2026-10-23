@@ -1,0 +1,7 @@
+VCD info: dumpfile vcd/psram_qspi.vcd opened for output.
+[TB] ctrl done: pass=1 err=0
+TEST PASS (errs=0, id=0x0d)
+[TB] word spot reads: PASS
+[TB] byte-granular: PASS
+[TB] RESULT: PASS
+sim/tb_psram_qspi.sv:166: $finish called at 1627232500 (1ps)

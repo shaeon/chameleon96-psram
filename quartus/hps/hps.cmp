@@ -1,0 +1,205 @@
+	component hps is
+		port (
+			clock_bridge_0_out_clk_1_clk           : out   std_logic;                                         -- clk
+			hps_0_f2h_sdram0_clock_clk             : in    std_logic                      := 'X';             -- clk
+			hps_0_f2h_sdram0_data_araddr           : in    std_logic_vector(31 downto 0)  := (others => 'X'); -- araddr
+			hps_0_f2h_sdram0_data_arlen            : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- arlen
+			hps_0_f2h_sdram0_data_arid             : in    std_logic_vector(7 downto 0)   := (others => 'X'); -- arid
+			hps_0_f2h_sdram0_data_arsize           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- arsize
+			hps_0_f2h_sdram0_data_arburst          : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- arburst
+			hps_0_f2h_sdram0_data_arlock           : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- arlock
+			hps_0_f2h_sdram0_data_arprot           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- arprot
+			hps_0_f2h_sdram0_data_arvalid          : in    std_logic                      := 'X';             -- arvalid
+			hps_0_f2h_sdram0_data_arcache          : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- arcache
+			hps_0_f2h_sdram0_data_awaddr           : in    std_logic_vector(31 downto 0)  := (others => 'X'); -- awaddr
+			hps_0_f2h_sdram0_data_awlen            : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- awlen
+			hps_0_f2h_sdram0_data_awid             : in    std_logic_vector(7 downto 0)   := (others => 'X'); -- awid
+			hps_0_f2h_sdram0_data_awsize           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- awsize
+			hps_0_f2h_sdram0_data_awburst          : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- awburst
+			hps_0_f2h_sdram0_data_awlock           : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- awlock
+			hps_0_f2h_sdram0_data_awprot           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- awprot
+			hps_0_f2h_sdram0_data_awvalid          : in    std_logic                      := 'X';             -- awvalid
+			hps_0_f2h_sdram0_data_awcache          : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- awcache
+			hps_0_f2h_sdram0_data_bresp            : out   std_logic_vector(1 downto 0);                      -- bresp
+			hps_0_f2h_sdram0_data_bid              : out   std_logic_vector(7 downto 0);                      -- bid
+			hps_0_f2h_sdram0_data_bvalid           : out   std_logic;                                         -- bvalid
+			hps_0_f2h_sdram0_data_bready           : in    std_logic                      := 'X';             -- bready
+			hps_0_f2h_sdram0_data_arready          : out   std_logic;                                         -- arready
+			hps_0_f2h_sdram0_data_awready          : out   std_logic;                                         -- awready
+			hps_0_f2h_sdram0_data_rready           : in    std_logic                      := 'X';             -- rready
+			hps_0_f2h_sdram0_data_rdata            : out   std_logic_vector(63 downto 0);                     -- rdata
+			hps_0_f2h_sdram0_data_rresp            : out   std_logic_vector(1 downto 0);                      -- rresp
+			hps_0_f2h_sdram0_data_rlast            : out   std_logic;                                         -- rlast
+			hps_0_f2h_sdram0_data_rid              : out   std_logic_vector(7 downto 0);                      -- rid
+			hps_0_f2h_sdram0_data_rvalid           : out   std_logic;                                         -- rvalid
+			hps_0_f2h_sdram0_data_wlast            : in    std_logic                      := 'X';             -- wlast
+			hps_0_f2h_sdram0_data_wvalid           : in    std_logic                      := 'X';             -- wvalid
+			hps_0_f2h_sdram0_data_wdata            : in    std_logic_vector(63 downto 0)  := (others => 'X'); -- wdata
+			hps_0_f2h_sdram0_data_wstrb            : in    std_logic_vector(7 downto 0)   := (others => 'X'); -- wstrb
+			hps_0_f2h_sdram0_data_wready           : out   std_logic;                                         -- wready
+			hps_0_f2h_sdram0_data_wid              : in    std_logic_vector(7 downto 0)   := (others => 'X'); -- wid
+			hps_0_f2h_sdram1_clock_clk             : in    std_logic                      := 'X';             -- clk
+			hps_0_f2h_sdram1_data_araddr           : in    std_logic_vector(31 downto 0)  := (others => 'X'); -- araddr
+			hps_0_f2h_sdram1_data_arlen            : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- arlen
+			hps_0_f2h_sdram1_data_arid             : in    std_logic_vector(7 downto 0)   := (others => 'X'); -- arid
+			hps_0_f2h_sdram1_data_arsize           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- arsize
+			hps_0_f2h_sdram1_data_arburst          : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- arburst
+			hps_0_f2h_sdram1_data_arlock           : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- arlock
+			hps_0_f2h_sdram1_data_arprot           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- arprot
+			hps_0_f2h_sdram1_data_arvalid          : in    std_logic                      := 'X';             -- arvalid
+			hps_0_f2h_sdram1_data_arcache          : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- arcache
+			hps_0_f2h_sdram1_data_awaddr           : in    std_logic_vector(31 downto 0)  := (others => 'X'); -- awaddr
+			hps_0_f2h_sdram1_data_awlen            : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- awlen
+			hps_0_f2h_sdram1_data_awid             : in    std_logic_vector(7 downto 0)   := (others => 'X'); -- awid
+			hps_0_f2h_sdram1_data_awsize           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- awsize
+			hps_0_f2h_sdram1_data_awburst          : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- awburst
+			hps_0_f2h_sdram1_data_awlock           : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- awlock
+			hps_0_f2h_sdram1_data_awprot           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- awprot
+			hps_0_f2h_sdram1_data_awvalid          : in    std_logic                      := 'X';             -- awvalid
+			hps_0_f2h_sdram1_data_awcache          : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- awcache
+			hps_0_f2h_sdram1_data_bresp            : out   std_logic_vector(1 downto 0);                      -- bresp
+			hps_0_f2h_sdram1_data_bid              : out   std_logic_vector(7 downto 0);                      -- bid
+			hps_0_f2h_sdram1_data_bvalid           : out   std_logic;                                         -- bvalid
+			hps_0_f2h_sdram1_data_bready           : in    std_logic                      := 'X';             -- bready
+			hps_0_f2h_sdram1_data_arready          : out   std_logic;                                         -- arready
+			hps_0_f2h_sdram1_data_awready          : out   std_logic;                                         -- awready
+			hps_0_f2h_sdram1_data_rready           : in    std_logic                      := 'X';             -- rready
+			hps_0_f2h_sdram1_data_rdata            : out   std_logic_vector(63 downto 0);                     -- rdata
+			hps_0_f2h_sdram1_data_rresp            : out   std_logic_vector(1 downto 0);                      -- rresp
+			hps_0_f2h_sdram1_data_rlast            : out   std_logic;                                         -- rlast
+			hps_0_f2h_sdram1_data_rid              : out   std_logic_vector(7 downto 0);                      -- rid
+			hps_0_f2h_sdram1_data_rvalid           : out   std_logic;                                         -- rvalid
+			hps_0_f2h_sdram1_data_wlast            : in    std_logic                      := 'X';             -- wlast
+			hps_0_f2h_sdram1_data_wvalid           : in    std_logic                      := 'X';             -- wvalid
+			hps_0_f2h_sdram1_data_wdata            : in    std_logic_vector(63 downto 0)  := (others => 'X'); -- wdata
+			hps_0_f2h_sdram1_data_wstrb            : in    std_logic_vector(7 downto 0)   := (others => 'X'); -- wstrb
+			hps_0_f2h_sdram1_data_wready           : out   std_logic;                                         -- wready
+			hps_0_f2h_sdram1_data_wid              : in    std_logic_vector(7 downto 0)   := (others => 'X'); -- wid
+			hps_0_f2h_sdram2_clock_clk             : in    std_logic                      := 'X';             -- clk
+			hps_0_f2h_sdram2_data_araddr           : in    std_logic_vector(31 downto 0)  := (others => 'X'); -- araddr
+			hps_0_f2h_sdram2_data_arlen            : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- arlen
+			hps_0_f2h_sdram2_data_arid             : in    std_logic_vector(7 downto 0)   := (others => 'X'); -- arid
+			hps_0_f2h_sdram2_data_arsize           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- arsize
+			hps_0_f2h_sdram2_data_arburst          : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- arburst
+			hps_0_f2h_sdram2_data_arlock           : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- arlock
+			hps_0_f2h_sdram2_data_arprot           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- arprot
+			hps_0_f2h_sdram2_data_arvalid          : in    std_logic                      := 'X';             -- arvalid
+			hps_0_f2h_sdram2_data_arcache          : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- arcache
+			hps_0_f2h_sdram2_data_awaddr           : in    std_logic_vector(31 downto 0)  := (others => 'X'); -- awaddr
+			hps_0_f2h_sdram2_data_awlen            : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- awlen
+			hps_0_f2h_sdram2_data_awid             : in    std_logic_vector(7 downto 0)   := (others => 'X'); -- awid
+			hps_0_f2h_sdram2_data_awsize           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- awsize
+			hps_0_f2h_sdram2_data_awburst          : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- awburst
+			hps_0_f2h_sdram2_data_awlock           : in    std_logic_vector(1 downto 0)   := (others => 'X'); -- awlock
+			hps_0_f2h_sdram2_data_awprot           : in    std_logic_vector(2 downto 0)   := (others => 'X'); -- awprot
+			hps_0_f2h_sdram2_data_awvalid          : in    std_logic                      := 'X';             -- awvalid
+			hps_0_f2h_sdram2_data_awcache          : in    std_logic_vector(3 downto 0)   := (others => 'X'); -- awcache
+			hps_0_f2h_sdram2_data_bresp            : out   std_logic_vector(1 downto 0);                      -- bresp
+			hps_0_f2h_sdram2_data_bid              : out   std_logic_vector(7 downto 0);                      -- bid
+			hps_0_f2h_sdram2_data_bvalid           : out   std_logic;                                         -- bvalid
+			hps_0_f2h_sdram2_data_bready           : in    std_logic                      := 'X';             -- bready
+			hps_0_f2h_sdram2_data_arready          : out   std_logic;                                         -- arready
+			hps_0_f2h_sdram2_data_awready          : out   std_logic;                                         -- awready
+			hps_0_f2h_sdram2_data_rready           : in    std_logic                      := 'X';             -- rready
+			hps_0_f2h_sdram2_data_rdata            : out   std_logic_vector(127 downto 0);                    -- rdata
+			hps_0_f2h_sdram2_data_rresp            : out   std_logic_vector(1 downto 0);                      -- rresp
+			hps_0_f2h_sdram2_data_rlast            : out   std_logic;                                         -- rlast
+			hps_0_f2h_sdram2_data_rid              : out   std_logic_vector(7 downto 0);                      -- rid
+			hps_0_f2h_sdram2_data_rvalid           : out   std_logic;                                         -- rvalid
+			hps_0_f2h_sdram2_data_wlast            : in    std_logic                      := 'X';             -- wlast
+			hps_0_f2h_sdram2_data_wvalid           : in    std_logic                      := 'X';             -- wvalid
+			hps_0_f2h_sdram2_data_wdata            : in    std_logic_vector(127 downto 0) := (others => 'X'); -- wdata
+			hps_0_f2h_sdram2_data_wstrb            : in    std_logic_vector(15 downto 0)  := (others => 'X'); -- wstrb
+			hps_0_f2h_sdram2_data_wready           : out   std_logic;                                         -- wready
+			hps_0_f2h_sdram2_data_wid              : in    std_logic_vector(7 downto 0)   := (others => 'X'); -- wid
+			hps_0_h2f_loan_io_in                   : out   std_logic_vector(66 downto 0);                     -- in
+			hps_0_h2f_loan_io_out                  : in    std_logic_vector(66 downto 0)  := (others => 'X'); -- out
+			hps_0_h2f_loan_io_oe                   : in    std_logic_vector(66 downto 0)  := (others => 'X'); -- oe
+			hps_0_h2f_user1_clock_clk              : out   std_logic;                                         -- clk
+			hps_0_i2c2_out_data                    : out   std_logic;                                         -- out_data
+			hps_0_i2c2_sda                         : in    std_logic                      := 'X';             -- sda
+			hps_0_i2c2_clk_clk                     : out   std_logic;                                         -- clk
+			hps_0_uart1_cts                        : in    std_logic                      := 'X';             -- cts
+			hps_0_uart1_dsr                        : in    std_logic                      := 'X';             -- dsr
+			hps_0_uart1_dcd                        : in    std_logic                      := 'X';             -- dcd
+			hps_0_uart1_ri                         : in    std_logic                      := 'X';             -- ri
+			hps_0_uart1_dtr                        : out   std_logic;                                         -- dtr
+			hps_0_uart1_rts                        : out   std_logic;                                         -- rts
+			hps_0_uart1_out1_n                     : out   std_logic;                                         -- out1_n
+			hps_0_uart1_out2_n                     : out   std_logic;                                         -- out2_n
+			hps_0_uart1_rxd                        : in    std_logic                      := 'X';             -- rxd
+			hps_0_uart1_txd                        : out   std_logic;                                         -- txd
+			hps_io_hps_io_sdio_inst_CMD            : inout std_logic                      := 'X';             -- hps_io_sdio_inst_CMD
+			hps_io_hps_io_sdio_inst_D0             : inout std_logic                      := 'X';             -- hps_io_sdio_inst_D0
+			hps_io_hps_io_sdio_inst_D1             : inout std_logic                      := 'X';             -- hps_io_sdio_inst_D1
+			hps_io_hps_io_sdio_inst_CLK            : out   std_logic;                                         -- hps_io_sdio_inst_CLK
+			hps_io_hps_io_sdio_inst_D2             : inout std_logic                      := 'X';             -- hps_io_sdio_inst_D2
+			hps_io_hps_io_sdio_inst_D3             : inout std_logic                      := 'X';             -- hps_io_sdio_inst_D3
+			hps_io_hps_io_usb1_inst_D0             : inout std_logic                      := 'X';             -- hps_io_usb1_inst_D0
+			hps_io_hps_io_usb1_inst_D1             : inout std_logic                      := 'X';             -- hps_io_usb1_inst_D1
+			hps_io_hps_io_usb1_inst_D2             : inout std_logic                      := 'X';             -- hps_io_usb1_inst_D2
+			hps_io_hps_io_usb1_inst_D3             : inout std_logic                      := 'X';             -- hps_io_usb1_inst_D3
+			hps_io_hps_io_usb1_inst_D4             : inout std_logic                      := 'X';             -- hps_io_usb1_inst_D4
+			hps_io_hps_io_usb1_inst_D5             : inout std_logic                      := 'X';             -- hps_io_usb1_inst_D5
+			hps_io_hps_io_usb1_inst_D6             : inout std_logic                      := 'X';             -- hps_io_usb1_inst_D6
+			hps_io_hps_io_usb1_inst_D7             : inout std_logic                      := 'X';             -- hps_io_usb1_inst_D7
+			hps_io_hps_io_usb1_inst_CLK            : in    std_logic                      := 'X';             -- hps_io_usb1_inst_CLK
+			hps_io_hps_io_usb1_inst_STP            : out   std_logic;                                         -- hps_io_usb1_inst_STP
+			hps_io_hps_io_usb1_inst_DIR            : in    std_logic                      := 'X';             -- hps_io_usb1_inst_DIR
+			hps_io_hps_io_usb1_inst_NXT            : in    std_logic                      := 'X';             -- hps_io_usb1_inst_NXT
+			hps_io_hps_io_spim0_inst_CLK           : out   std_logic;                                         -- hps_io_spim0_inst_CLK
+			hps_io_hps_io_spim0_inst_MOSI          : out   std_logic;                                         -- hps_io_spim0_inst_MOSI
+			hps_io_hps_io_spim0_inst_MISO          : in    std_logic                      := 'X';             -- hps_io_spim0_inst_MISO
+			hps_io_hps_io_spim0_inst_SS0           : out   std_logic;                                         -- hps_io_spim0_inst_SS0
+			hps_io_hps_io_spim1_inst_CLK           : out   std_logic;                                         -- hps_io_spim1_inst_CLK
+			hps_io_hps_io_spim1_inst_MOSI          : out   std_logic;                                         -- hps_io_spim1_inst_MOSI
+			hps_io_hps_io_spim1_inst_MISO          : in    std_logic                      := 'X';             -- hps_io_spim1_inst_MISO
+			hps_io_hps_io_spim1_inst_SS0           : out   std_logic;                                         -- hps_io_spim1_inst_SS0
+			hps_io_hps_io_uart0_inst_RX            : in    std_logic                      := 'X';             -- hps_io_uart0_inst_RX
+			hps_io_hps_io_uart0_inst_TX            : out   std_logic;                                         -- hps_io_uart0_inst_TX
+			hps_io_hps_io_i2c0_inst_SDA            : inout std_logic                      := 'X';             -- hps_io_i2c0_inst_SDA
+			hps_io_hps_io_i2c0_inst_SCL            : inout std_logic                      := 'X';             -- hps_io_i2c0_inst_SCL
+			hps_io_hps_io_i2c1_inst_SDA            : inout std_logic                      := 'X';             -- hps_io_i2c1_inst_SDA
+			hps_io_hps_io_i2c1_inst_SCL            : inout std_logic                      := 'X';             -- hps_io_i2c1_inst_SCL
+			hps_io_hps_io_i2c3_inst_SDA            : inout std_logic                      := 'X';             -- hps_io_i2c3_inst_SDA
+			hps_io_hps_io_i2c3_inst_SCL            : inout std_logic                      := 'X';             -- hps_io_i2c3_inst_SCL
+			hps_io_hps_io_gpio_inst_GPIO00         : inout std_logic                      := 'X';             -- hps_io_gpio_inst_GPIO00
+			hps_io_hps_io_gpio_inst_GPIO09         : inout std_logic                      := 'X';             -- hps_io_gpio_inst_GPIO09
+			hps_io_hps_io_gpio_inst_GPIO44         : inout std_logic                      := 'X';             -- hps_io_gpio_inst_GPIO44
+			hps_io_hps_io_gpio_inst_LOANIO14       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO14
+			hps_io_hps_io_gpio_inst_LOANIO17       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO17
+			hps_io_hps_io_gpio_inst_LOANIO19       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO19
+			hps_io_hps_io_gpio_inst_LOANIO22       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO22
+			hps_io_hps_io_gpio_inst_LOANIO23       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO23
+			hps_io_hps_io_gpio_inst_LOANIO25       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO25
+			hps_io_hps_io_gpio_inst_LOANIO27       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO27
+			hps_io_hps_io_gpio_inst_LOANIO28       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO28
+			hps_io_hps_io_gpio_inst_LOANIO29       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO29
+			hps_io_hps_io_gpio_inst_LOANIO30       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO30
+			hps_io_hps_io_gpio_inst_LOANIO32       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO32
+			hps_io_hps_io_gpio_inst_LOANIO33       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO33
+			hps_io_hps_io_gpio_inst_LOANIO34       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO34
+			hps_io_hps_io_gpio_inst_LOANIO48       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO48
+			hps_io_hps_io_gpio_inst_LOANIO53       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO53
+			hps_io_hps_io_gpio_inst_LOANIO54       : inout std_logic                      := 'X';             -- hps_io_gpio_inst_LOANIO54
+			memory_mem_a                           : out   std_logic_vector(14 downto 0);                     -- mem_a
+			memory_mem_ba                          : out   std_logic_vector(2 downto 0);                      -- mem_ba
+			memory_mem_ck                          : out   std_logic;                                         -- mem_ck
+			memory_mem_ck_n                        : out   std_logic;                                         -- mem_ck_n
+			memory_mem_cke                         : out   std_logic;                                         -- mem_cke
+			memory_mem_cs_n                        : out   std_logic;                                         -- mem_cs_n
+			memory_mem_ras_n                       : out   std_logic;                                         -- mem_ras_n
+			memory_mem_cas_n                       : out   std_logic;                                         -- mem_cas_n
+			memory_mem_we_n                        : out   std_logic;                                         -- mem_we_n
+			memory_mem_reset_n                     : out   std_logic;                                         -- mem_reset_n
+			memory_mem_dq                          : inout std_logic_vector(15 downto 0)  := (others => 'X'); -- mem_dq
+			memory_mem_dqs                         : inout std_logic_vector(1 downto 0)   := (others => 'X'); -- mem_dqs
+			memory_mem_dqs_n                       : inout std_logic_vector(1 downto 0)   := (others => 'X'); -- mem_dqs_n
+			memory_mem_odt                         : out   std_logic;                                         -- mem_odt
+			memory_mem_dm                          : out   std_logic_vector(1 downto 0);                      -- mem_dm
+			memory_oct_rzqin                       : in    std_logic                      := 'X';             -- oct_rzqin
+			pio_rf_leds_external_connection_export : out   std_logic_vector(1 downto 0);                      -- export
+			reset_bridge_0_out_reset_1_reset       : out   std_logic                                          -- reset
+		);
+	end component hps;
+

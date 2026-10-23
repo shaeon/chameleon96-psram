@@ -1,0 +1,18 @@
+# --- resultados de compilacion (los genera la CI) ---
+build/
+quartus/db/
+quartus/incremental_db/
+quartus/output_files/
+quartus/eda/
+quartus/.qsys_edit/
+*.qws
+
+# --- simulacion ---
+sim/*.vvp
+sim/vcd/
+*.vcd
+
+# --- copias de seguridad sueltas ---
+*.bak
+*.working_ok
+*.orig
